@@ -34,11 +34,11 @@ class Digint{
         int places = floor(log2(abs(base10value))/log2(base))+1;
         if(places==0){places = 1;}
 
+        //find digit for each place, starting at the highest (string[0])
         string digitString = "";
         int digit;
-        //find digit for each place, starting at the highest (string[0])
         for(size_t index = 0; index < places; index++){
-
+            
         }
 
         //check if value was not exausted
@@ -101,6 +101,21 @@ class Digint{
         for(size_t index = 0; index < digitString.size(); index++){
             place = digitString.size()-1-index;
             digit = symbols.find(digitString.at(place));
+
+            //err checks
+            if(digit > symbols.size()){ //bad symbol
+                cerr << symbols.at(digit) << " is an invalid digit" << endl;
+                throw std::invalid_argument("invalid digit string in constructor");
+            }else if(digit > base){ //symbol value too high for given base
+                base = digit;
+                
+                //DILEMA: change the base to fit, or throw to let the programmer know something went wrong?
+                /*
+                cerr << symbols.at(digit) << " does not belong in base " << numberBase << endl;
+                throw std::logic_error("invalid digit string in constructor");
+                */
+            }
+
             value += digit*pow(numberBase, place);
         }
     }
